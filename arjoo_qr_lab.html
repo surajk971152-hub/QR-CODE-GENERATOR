@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#07152f">
+<title>ARJOO QR LAB</title>
+<style>
+:root{--bg:#07152f;--panel:#102344;--line:#24456f;--cyan:#43dcff;--blue:#367dff;--muted:#a9bad2;--white:#f4f8ff}
+*{box-sizing:border-box}body{margin:0;font-family:Arial, sans-serif;background:radial-gradient(circle at 15% 0%,#173d70 0,transparent 35%),linear-gradient(145deg,#061126,#0b1e3e 60%,#07152f);color:var(--white);min-height:100vh}
+header{padding:28px 18px 14px;text-align:center} .logo{display:inline-flex;align-items:center;justify-content:center;width:54px;height:54px;border:1px solid #48dfff;border-radius:16px;color:var(--cyan);font-size:26px;box-shadow:0 0 25px #43dcff33}
+h1{margin:12px 0 6px;letter-spacing:2px;font-size:clamp(25px,6vw,38px)}h1 span{color:var(--cyan)}header p{margin:0;color:var(--muted);font-size:14px}
+main{width:min(920px,92%);margin:22px auto 50px}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}.tab{flex:1;min-width:115px;border:1px solid var(--line);background:#102344;color:#dceaff;padding:12px 10px;border-radius:12px;font-weight:bold;cursor:pointer}.tab.active{background:linear-gradient(120deg,#1764ce,#087f9d);border-color:#55dfff;color:white}
+.card{background:#0e2140eF;border:1px solid var(--line);border-radius:20px;padding:clamp(16px,4vw,26px);box-shadow:0 18px 55px #0005}.section{display:none}.section.active{display:block}label{display:block;font-weight:bold;margin:12px 0 8px}textarea,input{width:100%;background:#07172f;color:white;border:1px solid #31527b;border-radius:12px;padding:14px;font-size:16px;outline:none}textarea{min-height:110px;resize:vertical}textarea:focus,input:focus{border-color:var(--cyan);box-shadow:0 0 0 3px #43dcff18}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}button.primary,button.secondary{border:0;border-radius:12px;padding:12px 17px;font-weight:bold;cursor:pointer}.primary{background:linear-gradient(100deg,#287cff,#08b6d4);color:white}.secondary{background:#19365d;color:#eaf6ff;border:1px solid #34577e!important}.output{margin-top:18px;padding:16px;background:#07172f;border:1px solid #25466f;border-radius:14px;overflow-wrap:anywhere}.output h3{margin:0 0 10px;font-size:15px;color:var(--cyan)}pre{white-space:pre-wrap;word-break:break-all;margin:0;color:#d7f5ff;font:14px/1.7 monospace}#qr{background:white;padding:14px;width:max-content;max-width:100%;margin:12px auto;border-radius:8px;min-height:0}#qr img,#qr canvas{max-width:100%;height:auto}.hint{color:var(--muted);font-size:13px;line-height:1.6}.center{text-align:center}.status{color:#9deaff;font-size:13px;margin-top:10px;min-height:18px}footer{text-align:center;color:#8299b7;padding:0 15px 25px;font-size:12px}
+@media(max-width:520px){.tab{font-size:13px;padding:11px 7px}.actions button{flex:1}.card{border-radius:16px}}
+</style>
+</head>
+<body>
+<header><div class="logo">▦</div><h1>ARJOO <span>QR LAB</span></h1><p>Text • Binary • QR Code — सब एक ही जगह</p></header>
+<main>
+<div class="tabs">
+<button class="tab active" data-tab="qrSection">QR Generator</button>
+<button class="tab" data-tab="toBinary">Text → Binary</button>
+<button class="tab" data-tab="toText">Binary → Text</button>
+</div>
+<div class="card">
+<section class="section active" id="qrSection">
+<h2>QR Code Generator</h2><p class="hint">अपना नाम, मैसेज या वेबसाइट लिंक लिखें और QR Code बनाएं।</p>
+<label for="qrText">आपका Text / Link</label><textarea id="qrText" placeholder="जैसे: Hello Arjoo!"></textarea>
+<div class="actions"><button class="primary" id="makeQr">QR Code बनाएं</button><button class="secondary" id="clearQr">साफ करें</button></div>
+<div class="output center"><h3>आपका QR Code</h3><div id="qr"></div><button class="secondary" id="downloadQr" hidden>QR डाउनलोड करें</button><div class="status" id="qrStatus"></div></div>
+</section>
+<section class="section" id="toBinary">
+<h2>Text से Binary</h2><p class="hint">यह टूल हिन्दी और English दोनों को UTF-8 Binary में बदलता है।</p>
+<label for="plainText">अपना Text लिखें</label><textarea id="plainText" placeholder="जैसे: ARJOO"></textarea>
+<div class="actions"><button class="primary" id="convertBinary">Binary में बदलें</button><button class="secondary" id="copyBinary">Copy करें</button></div>
+<div class="output"><h3>Binary Output (8-bit bytes)</h3><pre id="binaryResult">यहाँ परिणाम दिखेगा…</pre></div>
+</section>
+<section class="section" id="toText">
+<h2>Binary से Text</h2><p class="hint">हर byte में 8 bits लिखें। Bytes के बीच space देना बेहतर है।</p>
+<label for="binaryInput">Binary Code</label><textarea id="binaryInput" placeholder="01000001 01010010 01001010"></textarea>
+<div class="actions"><button class="primary" id="convertText">Text में बदलें</button><button class="secondary" id="clearBinary">साफ करें</button></div>
+<div class="output"><h3>Text Output</h3><pre id="textResult">यहाँ परिणाम दिखेगा…</pre></div>
+</section>
+</div>
+</main>
+<footer>© 2026 ARJOO QR LAB · QR बनाने के लिए इंटरनेट कनेक्शन जरूरी है।</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+const tabs=document.querySelectorAll('.tab');
+tabs.forEach(t=>t.addEventListener('click',()=>{tabs.forEach(x=>x.classList.remove('active'));document.querySelectorAll('.section').forEach(x=>x.classList.remove('active'));t.classList.add('active');document.getElementById(t.dataset.tab).classList.add('active')}));
+const $=id=>document.getElementById(id);
+$('makeQr').addEventListener('click',()=>{
+ const value=$('qrText').value.trim();$('qr').innerHTML='';$('downloadQr').hidden=true;
+ if(!value){$('qrStatus').textContent='पहले कोई Text या Link लिखें।';return}
+ if(typeof QRCode==='undefined'){$('qrStatus').textContent='QR लाइब्रेरी लोड नहीं हुई। इंटरनेट जाँचें और पेज reload करें।';return}
+ new QRCode($('qr'),{text:value,width:220,height:220,colorDark:'#000000',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});
+ $('qrStatus').textContent='QR Code तैयार है।';$('downloadQr').hidden=false;
+});
+$('downloadQr').addEventListener('click',()=>{
+ const canvas=$('qr').querySelector('canvas'),img=$('qr').querySelector('img');let url=canvas?canvas.toDataURL('image/png'):img?.src;
+ if(!url){$('qrStatus').textContent='QR अभी तैयार नहीं है।';return}
+ const a=document.createElement('a');a.href=url;a.download='arjoo-qr-code.png';a.click();
+});
+$('clearQr').addEventListener('click',()=>{$('qrText').value='';$('qr').innerHTML='';$('qrStatus').textContent='';$('downloadQr').hidden=true});
+$('convertBinary').addEventListener('click',()=>{const s=$('plainText').value;if(!s){$('binaryResult').textContent='पहले Text लिखें।';return}const bytes=new TextEncoder().encode(s);$('binaryResult').textContent=Array.from(bytes,b=>b.toString(2).padStart(8,'0')).join(' ')});
+$('copyBinary').addEventListener('click',async()=>{const s=$('binaryResult').textContent;if(!s||s==='यहाँ परिणाम दिखेगा…')return;try{await navigator.clipboard.writeText(s);$('binaryResult').textContent=s+'\\n\\n(Copied!)'}catch(e){$('binaryResult').textContent=s+'\\n\\nकॉपी उपलब्ध नहीं; टेक्स्ट को long-press करके copy करें।'}});
+$('convertText').addEventListener('click',()=>{let raw=$('binaryInput').value.trim();if(!raw){$('textResult').textContent='पहले Binary लिखें।';return}let bits=raw.replace(/[^01]/g,'');if(bits.length%8!==0){$('textResult').textContent='त्रुटि: कुल bits की संख्या 8 से पूरी तरह विभाजित होनी चाहिए।';return}try{let bytes=new Uint8Array(bits.match(/.{8}/g).map(b=>parseInt(b,2)));$('textResult').textContent=new TextDecoder('utf-8',{fatal:true}).decode(bytes)}catch(e){$('textResult').textContent='यह सही UTF-8 Binary नहीं है। कृपया code जाँचें।'}});
+$('clearBinary').addEventListener('click',()=>{$('binaryInput').value='';$('textResult').textContent='यहाँ परिणाम दिखेगा…'});
+</script>
+</body></html>
